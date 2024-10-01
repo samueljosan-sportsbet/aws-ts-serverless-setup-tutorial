@@ -1,23 +1,23 @@
-service: serverlessSetup
+service: serverlessSetupSamiJNodeLeraning
 
 provider:
   name: aws
-  runtime: nodejs12.x
-  region: us-west-1
+  runtime: nodejs18.x
+  region: ap-southeast-2
 
 # functions
 functions:
   hello:
     handler: src/functions/hello.handler
-    events: # The events that trigger this function
+    events:
       - http: 
-          path: serverlessSetup/hello
+          path: serverlessSetupSamiJNodeLeraning/hello
           method: get
   goodbye:
     handler: src/functions/goodbye.handler
     events:
       - http: 
-          path: serverlessSetup/goodbye
+          path: serverlessSetupSamiJNodeLeraning/goodbye
           method: post
   question:
     handler: src/functions/question.handler
@@ -26,18 +26,16 @@ functions:
       - sns:
           arn: !Ref SNSHelloEvent
           topicName: hello-event
+  
+  vivantis-scraper:
+    handler: src/functions/vivantis-scraper.handler
+    timeout: 6000
+    events:
+      - http:
+          path: serverlessSetupSamiJNodeLeraning/vivantis-scraper
+          method: get
 
 # Serverless plugins
 plugins:
-  - serverless-plugin-typescript
   - serverless-offline
 
-# Resources your functions use
-resources:
-  Resources:
-    # SNS Topics
-    SNSHelloEvent:
-      Type: AWS::SNS::Topic
-      Properties:
-        DisplayName: Hello Event Topic
-        TopicName: hello-event
